@@ -1,0 +1,8 @@
+ver 1.1
+
+- Rework functions to account for input such as "0x32" or "0xF20x30"
+- Output data cleared after each result.
+- Change character display for not supported hex values.
+- Check input values from console.
+- Add better comments.
+- Add more to program instructions.
