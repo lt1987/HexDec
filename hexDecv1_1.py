@@ -3,8 +3,8 @@ import os
 
 ###############################################################################
 #Author:            Louvie Tucker
-#Version:           1.1
-#Last Modified:     10.11.2018
+#Version:           1.2
+#Last Modified:     10.12.2018
 #
 #Description:
 # This program reads in hex values to output its ASCII equivalent. The program
@@ -32,6 +32,7 @@ asciiMap = {'20':' ', '21':'!', '22':'"', '23':'#', '24':'$', '25':'%', '26':'&'
 
 
 inFile = ''     #File to read text from
+outFile = ''    #File to write to
 inStr = ''      #Text string from file or console
 hexStr = ''     #String for hex decoding
 ans = ''        #Main loop input
@@ -41,6 +42,35 @@ mainLoop = True 	#The program.
 ###############################################################################
 ##Functions
 ###############################################################################
+#/////////////////////////////////////////////////////////////////////////////#
+
+def writeResult(f, s):      #Write result to file
+    saveLoop = True             #Figure out how to save
+    output = ''                 #Output file
+    switch = 'w'                #Determine how to write to file
+
+    #Check if the file exists or not. If it doesn't, simply create and write to file
+    #Else, decide it the results will overwrite, append or be written to a new file
+    while saveLoop == True:
+        if os.path.isfile(f) == True:
+            a = input('This file already exists!\nDo you want to overwrite, append, or create a new file? (O/A/C)\n->')
+            if a.upper() == 'O':
+                switch = 'w'
+                saveLoop = False
+            elif a.upper() == 'A':
+                switch = 'a'
+                saveLoop = False
+            elif a.upper() == 'C':
+                f = input('Please enter a new filename.\n-> ')
+            else:
+                print('Invalid input!')
+
+        else:
+            saveLoop = False
+
+    output = open(f, switch)    #Open up file for manipulation
+    output.write(s)             #Write to file
+    output.close()              #Close the filestream
 #/////////////////////////////////////////////////////////////////////////////#
 
 def isHex(h1):      #Check if a character is a hex value
@@ -76,6 +106,8 @@ def inParse(i):         #Take input and parse through it to build the hex string
 def decode(h):          #Convert hex values to ASCII. Does not run if the value is an odd number length
     c = 0               #count var
     o = ''              #output string
+    w = ''              #Answer for write to file           
+    output = ''         #Output file name
     le = len(h) %2      #Find if the hex string length is even or odd
     
     #Even
@@ -90,6 +122,10 @@ def decode(h):          #Convert hex values to ASCII. Does not run if the value 
             c = c + 2
 
         print('Your hex input was [ ' + h + ' ].\nThe output is [ ' + o + ' ].\n')      #Print the result
+        w = input('Want to save results to a file? (Y/N)\n-> ')
+        if w.upper() == 'Y':
+            output = input('Where do you want to save?\n-> ')
+            writeResult(output, o+'\n')
     
     #Odd
     else:
@@ -111,11 +147,11 @@ while mainLoop == True:
     ans = ''
 
     print('Press "F" to read from a file. Press "S" to read from stdin. Press "Q" to quit this program.\n')
-    ans = input('Command: ')
+    ans = input('-> ')
  
     #Read from file
     if ans.lower() == 'f':
-        inFile = input("What file do you want to read: ")
+        inFile = input("What file do you want to read?\n-> ")
         
         if os.path.isfile(inFile) == True:  #Make sure the file exist
             f = open(inFile)
@@ -134,7 +170,7 @@ while mainLoop == True:
     #Read from Console
     elif ans.lower() == 's':
         #Retrieve Hex Value or end code
-        inStr = input("Enter a HEX value and I will give you a character.\n(EX:7A)")
+        inStr = input("Enter a HEX value and I will give you a character. (EX:7A)\n-> ")
         hexStr = inParse(inStr)             #Create hex string for decoding
         decode(hexStr)                      #Find ASCII value
 
