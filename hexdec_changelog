@@ -7,3 +7,11 @@ ver 1.1
 - Add better comments.
 - Add more to program instructions.
 - Add a option to save the output results.
+
+ver 1.2
+- Add in first 32 ASCII characters.
+- Add option to convert ASCII to hex. (From 0x20-0x7E)
+- Give option to switch conversion mode.
+- Add title art.
+- Add a "quit without saving" option if the filename already exists when saving results.
+- Updated comments.
